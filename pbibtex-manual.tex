@@ -1,0 +1,255 @@
+%#!make ptex-manual.pdf
+\documentclass[a4paper,11pt,nomag,dvipdfmx]{jsarticle}
+\usepackage[textwidth=42zw,lines=40,truedimen,centering]{geometry}
+
+%%%%%%%%%%%%%%%%
+% additional packages
+\usepackage{amsmath}
+\usepackage{array}\usepackage[all]{xy}
+\SelectTips{cm}{}
+%\usepackage[dvipdfmx]{graphicx}
+\usepackage[T1]{fontenc}
+\usepackage{booktabs,enumitem,multicol}
+\usepackage[defaultsups]{newpxtext}
+\usepackage[zerostyle=c,straightquotes]{newtxtt}
+\usepackage{newpxmath}
+\usepackage[hyperfootnotes=false]{hyperref}
+\usepackage{pxjahyper}
+\usepackage{hologo}
+\usepackage{makeidx}\makeindex
+
+% common
+\usepackage{../ptex-manual/ptex-manual}
+
+\def\code#1{\texttt{#1}}
+\def\file#1{\texttt{#1}}
+\def\codechar#1{\ensuremath{\langle\mbox{\null\code{#1}\null}\rangle}}
+
+%%%%%%%%%%%%%%%%
+\makeatletter
+\setlist{leftmargin=2zw}
+\setlist[description]{labelwidth=2zw,labelindent=1zw,topsep=\medskipamount}
+
+\def\>{\ifhmode\hskip\xkanjiskip\fi}
+
+\def\tsp{_{\mbox{\fontsize\sf@size\z@\ttfamily \char32}}}
+\def\tpar{_{\mbox{\fontsize\sf@size\z@\ttfamily \string\par}}}
+\def\tign{_{\mbox{\fontsize\sf@size\z@\selectfont --}}}
+
+\def\tableautorefname{表}
+\def\figureautorefname{図}
+\def\HyRef@autoref#1#2{%
+  \begingroup
+    \Hy@safe@activestrue
+    \expandafter\HyRef@autosetref\csname r@#2\endcsname{#2}{#1}%
+  \endgroup\textcompwordmark %欧文ゴースト
+}
+\makeatother
+
+\usepackage{shortvrb}
+\MakeShortVerb*{|}
+%%%%%%%%%%%%%%%%
+
+% logos
+\def\eTeX{$\varepsilon$-\TeX}
+\def\pTeX{p\kern-.10em\TeX}
+\def\epTeX{$\varepsilon$-\pTeX}
+\def\upTeX{u\pTeX}
+\def\eupTeX{$\varepsilon$-\upTeX}
+
+\def\JTeX{\leavevmode\textcompwordmark\lower.5ex\hbox{J}\kern-.17em\TeX}
+\def\JBibTeX{\leavevmode\textcompwordmark\lower.5ex\hbox{J}\kern-.08em\BibTeX}
+\def\pBibTeX{p\kern-.05em\BibTeX}
+\def\upBibTeX{u\pBibTeX}
+
+\def\TL{\TeX\ Live}
+
+\def\_{\leavevmode\vrule width .45em height -.2ex depth .3ex\relax}
+
+\frenchspacing
+\begin{document}
+\catcode`\<=13
+\title{\emph{\pBibTeX~/~\upBibTeX マニュアル}}
+\author{日本語\TeX 開発コミュニティ\null
+\thanks{\url{https://texjp.org},\ e-mail: \texttt{issue(at)texjp.org}}}
+\date{version 0.99d-j0.33，\today}
+\maketitle
+
+\pBibTeX と\upBibTeX は，それぞれ\pTeX と\upTeX と組み合わせて使用することを
+想定して開発された\BibTeX の日本語対応版である．
+\begin{itemize}
+  \item \pBibTeX の開発元：\\
+    \url{https://github.com/texjporg/tex-jp-build/}
+  \item \upBibTeX の開発元：\\
+    \url{http://www.t-lab.opal.ne.jp/tex/uptex.html}
+  \item 本ドキュメントの開発元：\\
+    \url{https://github.com/texjporg/pbibtex-manual/}
+\end{itemize}
+
+\BibTeX の日本語化は，電力中央研究所の松井正一氏によって
+\JBibTeX という名称で公開されたもの\footnote{%
+最終版は\JBibTeX~0.31である．1991/01/01付の\JBibTeX~0.30のパッケージに，
+1992/10/31にfj.comp.texhaxグループへ投稿されたバグ修正パッチ(0.31)を
+当てて得られる．}がベースであり，その仕様は\cite{jbibtex}に詳しい．
+また，オリジナルの\BibTeX 付属ドキュメント\file{btxdoc.pdf}と
+\file{btxhak.pdf}を日本語に訳し，\JBibTeX について補足を加えたドキュメントも
+用意されている\cite{jbtxdoc,jbtxhak}．
+これらのドキュメントは，一部の記述（第\ref{diff}節を参照）を除き
+現在の(u)\pBibTeX でも有効であるので，参照されたい．
+
+\tableofcontents
+\clearpage
+
+\section{日本語化の仕様}
+
+\BibTeX の日本語化の特徴は，大きく分けて3つである．
+\begin{itemize}
+ \item 多バイト文字の扱い
+ \item 文字種が増えたことへの対応
+ \item 日本語文字とそれ以外の区別
+\end{itemize}
+
+\subsection{多バイト文字の扱い}
+
+(u)\pBibTeX は，\BibTeX から最小の変更量で日本語を含む文献情報を
+扱えるようにした都合上，多バイト文字の扱いは以下のとおりとなっている．
+\begin{itemize}
+ \item \emph{文字列の位置や長さは「文字単位」ではなく「バイト単位」でカウントする}．
+ \item その結果として，開始位置や終了位置が多バイト文字の途中となる場合は，
+   \emph{多バイト文字の途中で切られないように位置を調整して多めに切り出す}．
+\end{itemize}
+
+具体的には，以下のスタイルパラメータが該当する．
+\begin{itemize}
+ \item |substring$|\\
+  整数値2つ（長さ，開始位置）と文字列リテラル1つをpopし，
+  指定の長さ（バイト長）の部分文字列をpushする組込関数である．
+  \begin{itemize}
+   \item 開始位置が多バイト文字の2バイト目以降であれば，1バイト目から取り出す．
+   \item 終了位置が多バイト文字の最終バイトでなければ，最終バイトまで取り出す．
+  \end{itemize}
+  したがって，\pBibTeX （内部コード|euc|）では最大2バイト長く，
+  \upBibTeX （内部コード|uptex|）では最大6バイト長い文字列が取り出されうる．
+
+ \item |text.prefix$|\\
+  整数値（長さ）と文字列リテラルをpopし，文字列の先頭から指定の長さ（バイト長）の
+  連続した文字列をpushする組込関数である．
+  終了位置が多バイトの文字の途中にならないよう調整されるので，
+  \pBibTeX （内部コード|euc|）では最大1バイト長く，
+  \upBibTeX （内部コード|uptex|）では最大3バイト長い文字列が取り出されうる．
+\end{itemize}
+
+以下に例を示す．%% [TODO]
+% https://oku.edu.mie-u.ac.jp/tex/mod/forum/discuss.php?d=2006
+% https://oku.edu.mie-u.ac.jp/tex/mod/forum/discuss.php?d=3184
+
+\subsection{文字種が増えたことへの対応}
+
+\begin{itemize}
+ \item |add.period$|\\
+  文字列リテラルをpopし，最後の文字（|}|を除く）がピリオド類
+  \codechar{.}\codechar{?}\codechar{!}のいずれでもないときに
+  \codechar{.}を最後に加える組込関数である．
+
+  \pBibTeX では，全角の\codechar{！}\codechar{？}\codechar{．}\codechar{。}
+  （それぞれU+FF01, U+FF1F, U+3002, U+FF0E）もピリオド類とみなし，
+  これらで終わっても\codechar{.}を付加しない．
+
+  \upBibTeX ではさらにU+203C, U+2047, U+2048, U+2049もピリオド類とみなす．
+
+ \item |format.name$|\\
+  文字列（フォーマット指定），整数値（何番めか），文字列（名前リスト）をpopし，
+  フォーマットされた名前の文字列をpushする組込関数である．\\
+  (u)\pBibTeX では，日本人の姓名の間のスペースとして全角空白U+3000も
+  半角空白と同じとみなし（全角空白は半角空白に変換して処理），
+  また複数の氏名間の区切りとして|and|と同様に
+  全角の読点\codechar{、}とコンマ\codechar{，}（それぞれU+FF0C, U+3001）も使える．
+\end{itemize}
+
+\subsection{日本語文字とそれ以外の区別}
+
+\begin{itemize}
+ \item |is.kanji.str$|\\
+  (u)\pBibTeX 独自の組込関数である．
+  スタックトップの文字列リテラルをpopし，
+  文字列中に「日本語文字」が1つでも含まれていれば整数値1を，
+  含まれなければ0をpushする．
+  なお，「日本語文字」かどうかの判定は以下のように行う．
+  \begin{itemize}
+   \item \pBibTeX の場合\\
+    ASCIIの範囲(0--127)に収まらない文字を全て「日本語文字」として扱う．
+   \item \upBibTeX （内部コード|uptex|）の場合\\
+    漢字・かな・ハングルに該当するUnicodeブロックの文字を「日本語文字」と
+    して扱う\footnote{実装上は\upTeX の\.{kcatcode}と同じブロック分けを流用して
+    いるのでそれに即して記述すると，既定値が16 (kanji), 17 (kana), 19 (hangul)の
+    ブロックを真，15 (latin), 18 (CJK symbol)のブロックを偽としている．}．
+    これは，|is.kanji.str$|関数がスタイルファイル内において
+    「日本人の姓名の間にはスペースを入れない」を実現するためにしばしば
+    使われることに合わせたバージョンu1.27（\TL~2021）以降の仕様である\cite{tjb109}．
+  \end{itemize}
+\end{itemize}
+
+
+\section{コマンドラインオプション}
+
+基本的には\BibTeX と同様であるが，以下が追加されている．
+\begin{itemize}
+ \item |-kanji=|<encoding>\\
+   入出力ファイルの文字コードを指定する．
+   利用可能な<encoding>の値：
+   \begin{itemize}
+    \item \pBibTeX ：\code{euc}, \code{sjis}, \code{jis}, \code{utf8}
+    \item \upBibTeX ：\code{euc}, \code{sjis}, \code{jis}, \code{utf8}, \code{uptex}
+   \end{itemize}
+ \item |-kanji-internal=|<encoding>\\
+   内部コードを指定する（\upBibTeX 専用）．
+   利用可能な<encoding>の値：
+   \begin{itemize}
+    \item \pBibTeX ：なし（常に\code{euc}に固定）
+    \item \upBibTeX ：\code{euc}, \code{uptex}
+   \end{itemize}
+\end{itemize}
+
+
+\section{参考：\JBibTeX と\pBibTeX の違い}\label{diff}
+
+松井氏による\JBibTeX~0.31（\BibTeX~0.99cベース）から
+現在の\pBibTeX に至った経緯は以下のとおりである．
+\begin{itemize}
+ \item 1994年，都立大（のち千葉大）の桜井貴文氏により，
+   \JTeX~1.6 (web2c~6.1)の配布キットに含めるための調整 → \JBibTeX~0.32
+ \item 1995年，アスキー\pTeX の配布キットに含めるための調整
+ \item 2002年，アスキーにより|-kanji|オプションの追加 → \JBibTeX~0.33
+ \item 2009年，日本語\TeX 開発コミュニティが\JBibTeX をフォークし，\pBibTeX に改名
+ \item 2010年，\pBibTeX が\pTeX とともに\TL へ収録され，\BibTeX~0.99dに対応
+\end{itemize}
+
+\JBibTeX は当初NTT \JTeX と組み合わせて使用することを想定して開発されたため，
+文字コードに関する扱いにNTT \JTeX 由来のものが多かった．
+具体的には以下の機能があったが，コマンド名が|jbibtex|から|pbibtex|（\pTeX と同じ接頭辞）
+に改名された2009年に削除されている\cite{ptexlive}：
+\begin{itemize}
+ \item JISコードにおいて日本語文字コード開始・終了を示す
+  種々のエスケープ・シーケンス（|ESC$@|と|ESC$B|，|ESC(J|と|ESC(B|など）を区別しない．
+ \item 環境変数|BIBTERMCODE|, |BIBFILECODE|\footnote{松井氏のドキュメント
+  \file{jbibtex.pdf} \cite{jbibtex}の「3.3 漢字コードの扱い」および
+  \file{jbtxdoc.pdf} \cite{jbtxdoc}の「1. 概要」の\JBibTeX での注意点として
+  言及されているもの．}は，\pBibTeX では参照されない．
+\end{itemize}
+
+
+\begin{thebibliography}{99}
+ \bibitem{jbibtex} 松井正一，「日本語\BibTeX ：\JBibTeX」，
+  \file{./jbibtex.pdf}
+ \bibitem{jbtxdoc} 松井正一，「\BibTeX ing：\BibTeX の使い方」，
+  \file{./jbtxdoc.pdf}
+ \bibitem{jbtxhak} 松井正一，「Designing \BibTeX\ Styles --- \BibTeX スタイルの作り方」，
+  \file{./jbtxhak.pdf}
+ \bibitem{ptexlive} 土村展之，「コマンド名問題 - ptexlive Wiki」\\
+  \url{https://tutimura.ath.cx/ptexlive/?%A5%B3%A5%DE%A5%F3%A5%C9%CC%BE%CC%E4%C2%EA}
+ \bibitem{tjb109} Haruhiko Okumura，「upbibtexで名と姓の間のスペースが消える」，
+  2020/10/11,\\
+  \url{https://github.com/texjporg/tex-jp-build/issues/109}
+\end{thebibliography}
+
+\end{document}
