@@ -50,12 +50,6 @@
 %%%%%%%%%%%%%%%%
 
 % logos
-\def\eTeX{$\varepsilon$-\TeX}
-\def\pTeX{p\kern-.10em\TeX}
-\def\epTeX{$\varepsilon$-\pTeX}
-\def\upTeX{u\pTeX}
-\def\eupTeX{$\varepsilon$-\upTeX}
-
 \def\JTeX{\leavevmode\textcompwordmark\lower.5ex\hbox{J}\kern-.17em\TeX}
 \def\JBibTeX{\leavevmode\textcompwordmark\lower.5ex\hbox{J}\kern-.08em\BibTeX}
 \def\pBibTeX{p\kern-.05em\BibTeX}
@@ -80,7 +74,7 @@
 \title{\emph{\pBibTeX~/~\upBibTeX マニュアル}}
 \author{日本語\TeX 開発コミュニティ\null
 \thanks{\url{https://texjp.org},\ e-mail: \texttt{issue(at)texjp.org}}}
-\date{version 0.99d-j0.33，\today}
+\date{version 0.99d-j0.34，\today}
 \maketitle
 
 \pBibTeX と\upBibTeX は，それぞれ\pTeX と\upTeX と組み合わせて使用することを
@@ -246,6 +240,23 @@
 「日本人の姓名の間にはスペースを入れない」という挙動を実現するために
 |is.kanji.str$|関数が実用されている．
 
+\subsection{その他詳細}\label{sec:jnewline}
+
+(u)\pBibTeX は，文献データベース（BIBファイル）を読み込んで文献リスト（BBLファイル）を
+出力するが，ファイルの行末の扱いは以下のとおりである．
+\begin{itemize}
+ \item \emph{入力BIBファイル内}の改行は，(u)\pBibTeX では一律に半角空白と同様に扱われる．
+   すなわち，(u)\pTeX とは異なり\emph{日本語文字直後の改行も半角空白と等価である}．
+ \item \emph{BBLファイルの出力時}に，長いエントリを一行に出力するか複数行に分割するか決定
+   する場面において，オリジナルの\BibTeX は任意の半角空白を分割可能箇所とみなす
+   \footnote{\BibTeX~0.99c以前では半角空白以外の箇所も行末に\code{\%}を補って改行された
+   が，2010年の0.99dでURLなどの長い文字列を壊さないように半角空白以外での分割が
+   禁止された．}が，(u)\pBibTeX~j0.34 (\TeX~Live 2022)以降は\emph{日本語文字の直後でない
+   半角空白のみを分割可能箇所とみなす}．これは，元々BIBファイルにあった日本語文字直後の
+   半角空白が仮にBBLファイルで改行に置換されれば，(u)\pTeX での読込時に「日本語文字直後の
+   改行は空白を発生しない」という仕様により半角空白が消えてしまうためである\cite{tjb132}．
+\end{itemize}
+
 
 \section{コマンドラインオプション}
 
@@ -279,12 +290,15 @@
  \item 2002年，アスキーにより|-kanji|オプションの追加 → \JBibTeX~0.33
  \item 2009年，日本語\TeX 開発コミュニティが\JBibTeX をフォークし，\pBibTeX に改名
  \item 2010年，\pBibTeX が\pTeX とともに\TL へ収録される．のちに\BibTeX~0.99d対応
+ \item 2012年，\upBibTeX が\upTeX とともに\TL へ収録される．
+ \item 2022年，出力BBLファイルでの行分割の改良（第\ref{sec:jnewline}節を参照） → \pBibTeX~j0.34
 \end{itemize}
 
 \JBibTeX は当初NTT \JTeX と組み合わせて使用することを想定して開発されたため，
 文字コードに関する扱いにNTT \JTeX 由来のものが多かった．
-具体的には以下の機能があったが，コマンド名が|jbibtex|から|pbibtex|（\pTeX と同じ接頭辞）
-に改名された2009年に削除されている\cite{ptexlive}：
+これらはコマンド名が|jbibtex|から|pbibtex|（\pTeX と同じ接頭辞）
+に改名された2009年に削除された\cite{ptexlive}ため，\pBibTeX は\JBibTeX と
+以下の点で異なっている：
 \begin{itemize}
  \item JISコードにおいて日本語文字コード開始・終了を示す
   種々のエスケープ・シーケンス（|ESC$@|と|ESC$B|，|ESC(J|と|ESC(B|など）を区別しない．
@@ -308,6 +322,9 @@
  \bibitem{tjb109} Haruhiko Okumura，「upbibtexで名と姓の間のスペースが消える」，
   2020/10/11,\\
   \url{https://github.com/texjporg/tex-jp-build/issues/109}
+ \bibitem{tjb132} Hironobu Yamashita，「(u)pbibtexで和文文字直後の半角スペースで改行が起きる」，
+  2022/02/07,\\
+  \url{https://github.com/texjporg/pbibtex-manual/issues/1}
 \end{thebibliography}
 
 \end{document}
