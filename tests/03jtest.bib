@@ -1,0 +1,35 @@
+% EN-dash / EM-dash などがあると (u)pbibtex がフリーズする問題
+@inbook{inbook,
+   author = "Donald E. Knuth",
+   title = "Fundamental Algorithms",
+   publisher = "Addison-Wesley",
+   year = "1973",
+   pages = "10--119"
+}
+
+% U+2013: en-dash (pbibtex -> ^^-escaped)
+@inbook{inbook-2013,
+   author = "Donald E. Knuth",
+   title = "Fundamental Algorithms",
+   publisher = "Addison-Wesley",
+   year = "1973",
+   pages = "10–119",
+}
+
+% U+2014: em-dash
+@inbook{inbook-2014,
+   author = "Donald E. Knuth",
+   title = "Fundamental Algorithms",
+   publisher = "Addison-Wesley",
+   year = "1973",
+   pages = "10—119",
+}
+
+% U+2015: em-dash
+@inbook{inbook-2015,
+   author = "Donald E. Knuth",
+   title = "Fundamental Algorithms",
+   publisher = "Addison-Wesley",
+   year = "1973",
+   pages = "10―119",
+}
