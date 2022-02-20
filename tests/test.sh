@@ -1,20 +1,36 @@
 #!/bin/sh
 
-### 01j: substring$ and is.kanji.str$
+### 01iskanji: is.kanji.str$
 
-platex -kanji=utf8 01jtest-p
-pbibtex -kanji=utf8 01jtest-p
-platex -kanji=utf8 01jtest-p
-platex -kanji=utf8 01jtest-p
-dvipdfmx 01jtest-p
-diff 01jtest-p.bbl.base 01jtest-p.bbl || exit 1
+platex -kanji=utf8 01iskanji-p
+pbibtex -kanji=utf8 01iskanji-p
+platex -kanji=utf8 01iskanji-p
+platex -kanji=utf8 01iskanji-p
+dvipdfmx 01iskanji-p
+diff 01iskanji-p.bbl.base 01iskanji-p.bbl || exit 1
 
-uplatex -kanji=utf8 01jtest-up
-upbibtex -kanji=utf8 01jtest-up
-uplatex -kanji=utf8 01jtest-up
-uplatex -kanji=utf8 01jtest-up
-dvipdfmx 01jtest-up
-diff 01jtest-up.bbl.base 01jtest-up.bbl || exit 1
+uplatex -kanji=utf8 01iskanji-up
+upbibtex -kanji=utf8 01iskanji-up
+uplatex -kanji=utf8 01iskanji-up
+uplatex -kanji=utf8 01iskanji-up
+dvipdfmx 01iskanji-up
+diff 01iskanji-up.bbl.base 01iskanji-up.bbl || exit 1
+
+### 01substring: substring$
+
+platex -kanji=utf8 01substring-p
+pbibtex -kanji=utf8 01substring-p
+platex -kanji=utf8 01substring-p
+platex -kanji=utf8 01substring-p
+dvipdfmx 01substring-p
+diff 01substring-p.bbl.base 01substring-p.bbl || exit 1
+
+uplatex -kanji=utf8 01substring-up
+upbibtex -kanji=utf8 01substring-up
+uplatex -kanji=utf8 01substring-up
+uplatex -kanji=utf8 01substring-up
+dvipdfmx 01substring-up
+diff 01substring-up.bbl.base 01substring-up.bbl || exit 1
 
 ### 02j: line break in BBL output
 

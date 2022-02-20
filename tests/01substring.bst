@@ -101,11 +101,7 @@ FUNCTION {field.or.null}
 FUNCTION {emphasize}
 { duplicate$ empty$
     { pop$ "" }
-    { duplicate$ is.kanji.str$
-	{ "{" swap$ * "} (is.kanji.str true)" * }
-	{ "{\em " swap$ * "} (is.kanji.str false)" * }
-      if$
-    }
+    { "{\em " swap$ * "}" * }
   if$
 }
 
@@ -116,33 +112,22 @@ FUNCTION {format.names}
   s num.names$ 'numnames :=
   numnames 'namesleft :=
     { namesleft #0 > }
-    { s nameptr "{ff}{ll}" format.name$ is.kanji.str$
-	{s nameptr "{ff}{ll}" format.name$ 't :=}
- 	{s nameptr "{ff~}{vv~}{ll}{, jj}" format.name$ 't :=}
-      if$
+    { s nameptr "{ff~}{vv~}{ll}{, jj}" format.name$ 't :=
       nameptr #1 >
-	{ namesleft #1 >
-	    {", " * t * }
-	    { t "others" =
- 		{ s is.kanji.str$
- 			{"ほか" * }
- 			{", et~al." * }
- 		  if$
- 		}
- 		{ s is.kanji.str$
- 		    {", " * t * }
-		    { numnames #2 =
- 			{" and " * t * }
- 			{", and " * t * }
-		      if$
-		    }
- 		   if$
- 		}
-	      if$
-	    }
-	  if$
-	}
-	't
+        { namesleft #1 >
+            { ", " * t * }
+            { numnames #2 >
+                { "," * }
+                'skip$
+              if$
+              t "others" =
+                { " et~al." * }
+                { " and " * t * }
+              if$
+            }
+          if$
+        }
+        't
       if$
       nameptr #1 + 'nameptr :=
       namesleft #1 - 'namesleft :=
@@ -180,13 +165,6 @@ FUNCTION {book}
 FUNCTION {default.type} { book }
 
 READ
-FUNCTION {set.is.kanji.entry}
-{
-  author    field.or.null is.kanji.str$
-  title     field.or.null is.kanji.str$ or
-  'is.kanji.entry :=
-}
-ITERATE {set.is.kanji.entry}
 
 SORT
 

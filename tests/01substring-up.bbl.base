@@ -2,10 +2,10 @@
 \\
 \noindent あいうえおの最後の1文字 = 「お」
 \\ あいうえおの最後の2文字 = 「お」
-\\ あいうえおの最後の3文字 = 「えお」
+\\ あいうえおの最後の3文字 = 「お」
 \\ あいうえおの最後の4文字 = 「えお」
-\\ あいうえおの最後の5文字 = 「うえお」
-\\ あいうえおの最後の6文字 = 「うえお」
+\\ あいうえおの最後の5文字 = 「えお」
+\\ あいうえおの最後の6文字 = 「えお」
 \\ abcdefの最後の1文字 = 「f」
 \\ abcdefの最後の2文字 = 「ef」
 \\ abcdefの最後の3文字 = 「def」
@@ -14,10 +14,10 @@
 \\ abcdefの最後の6文字 = 「abcdef」
 \\ あいうえおの最初の1文字 = 「あ」
 \\ あいうえおの最初の2文字 = 「あ」
-\\ あいうえおの最初の3文字 = 「あい」
+\\ あいうえおの最初の3文字 = 「あ」
 \\ あいうえおの最初の4文字 = 「あい」
-\\ あいうえおの最初の5文字 = 「あいう」
-\\ あいうえおの最初の6文字 = 「あいう」
+\\ あいうえおの最初の5文字 = 「あい」
+\\ あいうえおの最初の6文字 = 「あい」
 \\ abcdefの最初の1文字 = 「a」
 \\ abcdefの最初の2文字 = 「ab」
 \\ abcdefの最初の3文字 = 「abc」
@@ -29,17 +29,7 @@
 
 \bibitem{dek}
 Donald~E. Knuth.
-\newblock {\em The Art of Computer Programming} (is.kanji.str false).
+\newblock {\em The Art of Computer Programming}.
 \newblock 1973.
-
-\bibitem{kigou}
-Dummy Symbols.
-\newblock {＄￡（！？）♪§●□■、◇○◆。} (is.kanji.str true).
-\newblock 2020.
-
-\bibitem{nakano}
-中野賢.
-\newblock {日本語{\LaTeXe}ブック} (is.kanji.str true).
-\newblock 1996.
 
 \end{thebibliography}
