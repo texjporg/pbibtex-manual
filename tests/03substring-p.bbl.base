@@ -1,0 +1,43 @@
+さらなるsubstringの動作 \hfill\break
+
+\hfill\break あいうえおの最後の6文字 = 「うえお」
+\hfill\break あいうえおの最後の1文字を除く5文字 = 「うえ」
+\hfill\break あいうえおの最後の2文字を除く4文字 = 「うえ」
+\hfill\break あいうえおの最後の3文字を除く3文字 = 「うえ」
+\hfill\break あいうえおの最後の4文字を除く2文字 = 「う」
+\hfill\break あいうえおの最後の5文字を除く1文字 = 「う」
+\hfill\break abcdefの最後の6文字 = 「abcdef」
+\hfill\break abcdefの最後の1文字を除く5文字 = 「abcde」
+\hfill\break abcdefの最後の2文字を除く4文字 = 「abcd」
+\hfill\break abcdefの最後の3文字を除く3文字 = 「abc」
+\hfill\break abcdefの最後の4文字を除く2文字 = 「ab」
+\hfill\break abcdefの最後の5文字を除く1文字 = 「a」
+\hfill\break 漢の最後の1文字 = 「漢」
+\hfill\break 漢の最後の1文字を除く1文字 = 「」
+\hfill\break Aの最後の1文字 = 「A」
+\hfill\break Aの最後の1文字を除く1文字 = 「」
+\hfill\break あいうえおの最初の6文字 = 「あいう」
+\hfill\break あいうえおの最初の1文字を除く5文字 = 「いう」
+\hfill\break あいうえおの最初の2文字を除く4文字 = 「いう」
+\hfill\break あいうえおの最初の3文字を除く3文字 = 「いう」
+\hfill\break あいうえおの最初の4文字を除く2文字 = 「う」
+\hfill\break あいうえおの最初の5文字を除く1文字 = 「う」
+\hfill\break abcdefの最初の6文字 = 「abcdef」
+\hfill\break abcdefの最初の1文字を除く5文字 = 「bcdef」
+\hfill\break abcdefの最初の2文字を除く4文字 = 「cdef」
+\hfill\break abcdefの最初の3文字を除く3文字 = 「def」
+\hfill\break abcdefの最初の4文字を除く2文字 = 「ef」
+\hfill\break abcdefの最初の5文字を除く1文字 = 「f」
+\hfill\break 漢の最初の1文字 = 「漢」
+\hfill\break 漢の最初の1文字を除く1文字 = 「」
+\hfill\break Aの最初の1文字 = 「A」
+\hfill\break Aの最初の1文字を除く1文字 = 「」
+
+\begin{thebibliography}{9}
+
+\bibitem{dek}
+Donald~E. Knuth.
+\newblock {\em The Art of Computer Programming}.
+\newblock 1973.
+
+\end{thebibliography}

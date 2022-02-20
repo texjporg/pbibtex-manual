@@ -66,4 +66,18 @@ diff 03substring-up.bbl.base 03substring-up.bbl || exit 1
 
 ### 03jtest: not working now!
 
+ptex -kanji=utf8 03jtest
+pbibtex -kanji=utf8 03jtest
+ptex -kanji=utf8 03jtest
+ptex -kanji=utf8 03jtest
+dvipdfmx 03jtest
+diff 03jtest-p.bbl.base 03jtest.bbl || exit 1
+
+uptex -kanji=utf8 03jtest
+upbibtex -kanji=utf8 03jtest
+uptex -kanji=utf8 03jtest
+uptex -kanji=utf8 03jtest
+dvipdfmx 03jtest
+diff 03jtest-up.bbl.base 03jtest.bbl || exit 1
+
 echo SUCCESS

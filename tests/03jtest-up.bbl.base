@@ -1,0 +1,27 @@
+\begin{thebibliography}{9}
+
+\bibitem{inbook}
+Donald~E. Knuth.
+\newblock {\em Fundamental Algorithms}.
+\newblock pp.10--119.
+\newblock 1973.
+
+\bibitem{inbook-2013}
+Donald~E. Knuth.
+\newblock {\em Fundamental Algorithms}.
+\newblock p.10–119.
+\newblock 1973.
+
+\bibitem{inbook-2014}
+Donald~E. Knuth.
+\newblock {\em Fundamental Algorithms}.
+\newblock p.10—119.
+\newblock 1973.
+
+\bibitem{inbook-2015}
+Donald~E. Knuth.
+\newblock {\em Fundamental Algorithms}.
+\newblock p.10―119.
+\newblock 1973.
+
+\end{thebibliography}
