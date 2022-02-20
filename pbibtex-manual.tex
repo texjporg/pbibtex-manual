@@ -115,7 +115,7 @@
  \item 日本語文字とそれ以外の区別
 \end{itemize}
 
-\subsection{多バイト文字の扱い}
+\subsection{多バイト文字の扱い}\label{sec:substring}
 
 (u)\pBibTeX は，\BibTeX から最小の変更量で日本語を含む文献情報を
 扱えるようにした都合上，多バイト文字の扱いは以下のとおりとなっている．
@@ -390,7 +390,8 @@
  \item 2009年，日本語\TeX 開発コミュニティが\JBibTeX をフォークし，\pBibTeX に改名
  \item 2010年，\pBibTeX が\pTeX とともに\TL へ収録される．のちに\BibTeX~0.99d対応
  \item 2012年，\upBibTeX が\upTeX とともに\TL へ収録される．
- \item 2022年，出力BBLファイルでの行分割の改良（第\ref{sec:jnewline}節を参照） → \pBibTeX~j0.34
+ \item 2022年，出力BBLファイルでの行分割の改良（第\ref{sec:jnewline}節を参照）\\
+   |substring$|関数の改良（第\ref{sec:substring}節を参照） → \pBibTeX~j0.34
 \end{itemize}
 
 \JBibTeX は当初NTT \JTeX と組み合わせて使用することを想定して開発されたため，
