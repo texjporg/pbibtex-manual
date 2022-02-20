@@ -122,20 +122,40 @@
 \begin{itemize}
  \item \emph{文字列の位置や長さは「文字単位」ではなく「バイト単位」でカウントする}．
  \item その結果として，開始位置や終了位置が多バイト文字の途中となる場合は，
-   \emph{多バイト文字の途中で切られないように位置を調整して多めに切り出す}．
+   \emph{多バイト文字の途中で切られないように位置を調整する}．
 \end{itemize}
 
 具体的には，以下のスタイルパラメータが該当する．
 \begin{itemize}
  \item |substring$|\\
-  整数値2つ（長さ，開始位置）と文字列リテラル1つをpopし，
+  整数値2つ（長さ，起点）と文字列リテラル1つをpopし，
   指定の長さ（バイト長）の部分文字列をpushする組込関数である．
-  \begin{itemize}
-   \item 開始位置が多バイト文字の2バイト目以降であれば，1バイト目から取り出す．
-   \item 終了位置が多バイト文字の最終バイトでなければ，最終バイトまで取り出す．
-  \end{itemize}
-  したがって，\pBibTeX （内部コード|euc|）では最大2バイト長く，
+  起点に指定された整数値が正であれば文字列の先頭から，
+  負であれば末尾から長さを数えて取り出す．
+
+  多バイト文字についての開始・終了位置の調整は以下の順で行う．
+\begin{quotation}
+  \begin{enumerate}
+   \item[(1)] 開始位置が多バイト文字の2バイト目以降であれば，1バイト目から取り出す．
+   \item[(2)] 終了位置が多バイト文字の最終バイトでなければ，最終バイトまで取り出す．
+  \end{enumerate}
+\end{quotation}
+  したがって，この時点で\pBibTeX （内部コード|euc|）では最大2バイト長く，
   \upBibTeX （内部コード|uptex|）では最大6バイト長い文字列が取り出されうる．
+
+  さらに，(u)\pBibTeX~j0.34 (\TeX~Live 2022)以降では% r62095 (2022-02-20)
+\begin{quotation}
+  \begin{enumerate}
+   \item[(3)] 起点が|#2|以上に指定されたにもかかわらず，上の(1)の調整により
+     開始位置が文字列の先頭になってしまった場合は，
+     その先頭の多バイト文字を切り捨てる．
+   \item[(4)] 起点が|#-2|以下に指定されたにもかかわらず，上の(2)の調整により
+     終了位置が文字列の末尾になってしまった場合は，
+     その末尾の多バイト文字を切り捨てる．
+  \end{enumerate}
+\end{quotation}
+  という調整も加えてある．したがって，\pBibTeX では最大1バイト短く，
+  \upBibTeX では最大3バイト短くなる（場合によっては空になる）ことがある．
 
  \item |text.prefix$|\\
   整数値（長さ）と文字列リテラルをpopし，文字列の先頭から指定の長さ（バイト長）の
@@ -151,29 +171,34 @@
 \pBibTeX と\upBibTeX では同じ文字でもバイト長が異なる場合があり，
 その結果として取り出される見かけの文字数が異なることに注意．
 
-\pBibTeX （内部コード|euc|）の場合\par\medskip
-\begin{minipage}{0.5\textwidth}
+\par\medskip\noindent
+\begin{minipage}{0.45\textwidth}
 \begin{verbatim}
-"あいうえお" #-1 #1 substring$
-"あいうえお" #-1 #2 substring$
-"あいうえお" #-1 #3 substring$
-"あいうえお" #-1 #4 substring$
-"あいうえお" #-1 #5 substring$
-"あいうえお" #-1 #6 substring$
+例1：長めに調整(2)
+"あいうえお" #1 #1 substring$
+"あいうえお" #1 #2 substring$
+"あいうえお" #1 #3 substring$
+"あいうえお" #1 #4 substring$
+"あいうえお" #1 #5 substring$
+"あいうえお" #1 #6 substring$
 \end{verbatim}
 \end{minipage}
-\begin{minipage}{0.4\textwidth}
-最後の1文字 = 「お」\par
-最後の2文字 = 「お」\par
-最後の3文字 = 「えお」\par
-最後の4文字 = 「えお」\par
-最後の5文字 = 「うえお」\par
-最後の6文字 = 「うえお」
-\end{minipage}\par\medskip
+\begin{minipage}{0.5\textwidth}
+\begin{tabular}{lll}
+            & \pBibTeX   & \upBibTeX \\
+最初の1文字 & 「あ」     & 「あ」    \\
+最初の2文字 & 「あ」     & 「あ」    \\
+最初の3文字 & 「あい」   & 「あ」    \\
+最初の4文字 & 「あい」   & 「あい」  \\
+最初の5文字 & 「あいう」 & 「あい」  \\
+最初の6文字 & 「あいう」 & 「あい」
+\end{tabular}
+\end{minipage}
 
-\upBibTeX （内部コード|uptex|）の場合\par\medskip
-\begin{minipage}{0.5\textwidth}
+\par\medskip\noindent
+\begin{minipage}{0.45\textwidth}
 \begin{verbatim}
+例2：長めに調整(1)
 "あいうえお" #-1 #1 substring$
 "あいうえお" #-1 #2 substring$
 "あいうえお" #-1 #3 substring$
@@ -182,14 +207,88 @@
 "あいうえお" #-1 #6 substring$
 \end{verbatim}
 \end{minipage}
-\begin{minipage}{0.4\textwidth}
-最後の1文字 = 「お」\par
-最後の2文字 = 「お」\par
-最後の3文字 = 「お」\par
-最後の4文字 = 「えお」\par
-最後の5文字 = 「えお」\par
-最後の6文字 = 「えお」
-\end{minipage}\par\medskip
+\begin{minipage}{0.5\textwidth}
+\begin{tabular}{lll}
+            & \pBibTeX   & \upBibTeX \\
+最後の1文字 & 「お」     & 「お」    \\
+最後の2文字 & 「お」     & 「お」    \\
+最後の3文字 & 「えお」   & 「お」    \\
+最後の4文字 & 「えお」   & 「えお」  \\
+最後の5文字 & 「うえお」 & 「えお」  \\
+最後の6文字 & 「うえお」 & 「えお」
+\end{tabular}
+\end{minipage}
+
+\par\medskip\noindent
+\begin{minipage}{0.45\textwidth}
+\begin{verbatim}
+例3：先頭文字の途中調整(3)
+"あいうえお" #1 #6 substring$
+"あいうえお" #2 #5 substring$
+"あいうえお" #3 #4 substring$
+"あいうえお" #4 #3 substring$
+"あいうえお" #5 #2 substring$
+"あいうえお" #6 #1 substring$
+\end{verbatim}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{tabular}{lll}
+                       & \pBibTeX   & \upBibTeX \\
+最初の6文字            & 「あいう」 & 「あい」  \\
+最初の1文字を除く5文字 & 「いう」   & 「い」    \\
+最初の2文字を除く4文字 & 「いう」   & 「い」    \\
+最初の3文字を除く3文字 & 「いう」   & 「い」    \\
+最初の4文字を除く2文字 & 「う」     & 「い」    \\
+最初の5文字を除く1文字 & 「う」     & 「い」
+\end{tabular}
+\end{minipage}
+
+\par\medskip\noindent
+\begin{minipage}{0.45\textwidth}
+\begin{verbatim}
+例4：末尾文字の途中調整(4)
+"あいうえお" #-1 #6 substring$
+"あいうえお" #-2 #5 substring$
+"あいうえお" #-3 #4 substring$
+"あいうえお" #-4 #3 substring$
+"あいうえお" #-5 #2 substring$
+"あいうえお" #-6 #1 substring$
+\end{verbatim}
+\end{minipage}
+\begin{minipage}{0.5\textwidth}
+\begin{tabular}{lll}
+                       & \pBibTeX   & \upBibTeX \\
+最後の6文字            & 「うえお」 & 「えお」  \\
+最後の1文字を除く5文字 & 「うえ」   & 「え」    \\
+最後の2文字を除く4文字 & 「うえ」   & 「え」    \\
+最後の3文字を除く3文字 & 「うえ」   & 「え」    \\
+最後の4文字を除く2文字 & 「う」     & 「え」    \\
+最後の5文字を除く1文字 & 「う」     & 「え」
+\end{tabular}
+\end{minipage}
+
+\par\medskip
+\begin{dangerous}
+  (u)\pBibTeX~j0.33 (\TeX~Live 2021)以前の|substring$|では，
+  オリジナルの\JBibTeX と同様，上記のうち調整(1)と(2)しか
+  行っていなかった．すなわち「開始位置や終了位置が多バイトの文字の
+  途中となる場合は，位置を調整して\emph{常に長めに切り出す}」という
+  仕様であった．しかし，これでは
+\begin{verbatim}
+"（あいうえお" #2 global.max$ substring$  % 最初の1文字を除去したい
+"あいうえお）" #-2 global.max$ substring$ % 最後の1文字を除去したい
+\end{verbatim}
+  のような場合に文字を除去できず，例えば「|while$|ループ内で
+  |substring$|関数により文字列を1つずつ切り詰めて短くする処理」に
+  和文文字リテラルが渡ると文字列が一向に短くならず，
+  無限ループが起きてしまっていた\cite{tjb133}．
+  そこで，(u)\pBibTeX~j0.34 (\TeX~Live 2022)以降は調整(3)と(4)を加え，
+  \emph{カウント起点が「先頭の多バイト文字の途中」または「末尾の多バイト文字の
+  途中」の場合に限って取り除くことで短めに切り出す}こととした．
+  なお，カウント終点側の多バイト文字については常に長めに切り出すし，
+  カウント起点が先頭でも末尾でもない多バイト文字の場合は長めに切り出す
+  という点は従来と同じである．上記の例を見るのが早いであろう．
+\end{dangerous}
 
 \subsection{文字種が増えたことへの対応}
 
@@ -243,7 +342,7 @@
 \subsection{その他詳細}\label{sec:jnewline}
 
 (u)\pBibTeX は，文献データベース（BIBファイル）を読み込んで文献リスト（BBLファイル）を
-出力するが，ファイルの行末の扱いは以下のとおりである．
+出力するが，ファイルの行末の扱いは以下のとおりである．% r62001 (2022-02-08)
 \begin{itemize}
  \item \emph{入力BIBファイル内}の改行は，(u)\pBibTeX では一律に半角空白と同様に扱われる．
    すなわち，(u)\pTeX とは異なり\emph{日本語文字直後の改行も半角空白と等価である}．
@@ -325,6 +424,9 @@
  \bibitem{tjb132} Hironobu Yamashita，「(u)pbibtexで和文文字直後の半角スペースで改行が起きる」，
   2022/02/07,\\
   \url{https://github.com/texjporg/pbibtex-manual/issues/1}
+ \bibitem{tjb133} Hironobu Yamashita，「(u)pbibtex: freeze at en-dash etc. + sieicej.bst」，
+  2022/02/19,\\
+  \url{https://github.com/texjporg/tex-jp-build/issues/133}
 \end{thebibliography}
 
 \end{document}
