@@ -34,18 +34,18 @@ diff 01substring-up.bbl.base 01substring-up.bbl || exit 1
 
 ### 02j: line break in BBL output
 
-ptex -kanji=utf8 02jtest
-pbibtex -kanji=utf8 02jtest
-ptex -kanji=utf8 02jtest
-ptex -kanji=utf8 02jtest
-dvipdfmx 02jtest
-diff 02jtest.bbl.base 02jtest.bbl || exit 1
+ptex -kanji=utf8 02jnewline
+pbibtex -kanji=utf8 02jnewline
+ptex -kanji=utf8 02jnewline
+ptex -kanji=utf8 02jnewline
+dvipdfmx 02jnewline
+diff 02jnewline.bbl.base 02jnewline.bbl || exit 1
 
-uptex -kanji=utf8 02jtest
-upbibtex -kanji=utf8 02jtest
-uptex -kanji=utf8 02jtest
-uptex -kanji=utf8 02jtest
-dvipdfmx 02jtest
-diff 02jtest.bbl.base 02jtest.bbl || exit 1
+uptex -kanji=utf8 02jnewline
+upbibtex -kanji=utf8 02jnewline
+uptex -kanji=utf8 02jnewline
+uptex -kanji=utf8 02jnewline
+dvipdfmx 02jnewline
+diff 02jnewline.bbl.base 02jnewline.bbl || exit 1
 
 echo SUCCESS
