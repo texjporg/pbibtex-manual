@@ -1,0 +1,13 @@
+% https://github.com/texjporg/tex-jp-build/issues/109
+\documentclass{ltjsarticle}
+% ギリシャ文字・キリル文字を欧文扱い
+\ltjsetparameter{jacharrange={-2}}
+\usepackage{luatexja-fontspec}
+\usepackage[sourcehan]{luatexja-preset}
+\setmainfont{XITS}% ギリシャ文字・キリル文字を含む
+\begin{document}
+test
+\nocite{*}
+\bibliographystyle{jplain}
+\bibliography{\jobname}
+\end{document}

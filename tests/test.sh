@@ -64,7 +64,7 @@ uptex -kanji=utf8 03substring-up
 dvipdfmx 03substring-up
 diff 03substring-up.bbl.base 03substring-up.bbl || exit 1
 
-### 03jtest: not working now!
+### 03jtest: real life example of substring$
 
 ptex -kanji=utf8 03jtest
 pbibtex -kanji=utf8 03jtest
@@ -79,5 +79,13 @@ uptex -kanji=utf8 03jtest
 uptex -kanji=utf8 03jtest
 dvipdfmx 03jtest
 diff 03jtest-up.bbl.base 03jtest.bbl || exit 1
+
+### 04unibib: is.kanji.str$ (from uptexdir/)
+
+lualatex 04unibib
+upbibtex -kanji=utf8 04unibib
+lualatex 04unibib
+lualatex 04unibib
+diff 04unibib.bbl.base 04unibib.bbl || exit 1
 
 echo SUCCESS
