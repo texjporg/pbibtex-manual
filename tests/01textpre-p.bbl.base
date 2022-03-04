@@ -1,0 +1,23 @@
+\verb|text.prefix$| の動作 \\
+\\
+\noindent あいうえおの最初の1文字 = 「あ」
+\\ あいうえおの最初の2文字 = 「あ」
+\\ あいうえおの最初の3文字 = 「あい」
+\\ あいうえおの最初の4文字 = 「あい」
+\\ あいうえおの最初の5文字 = 「あいう」
+\\ あいうえおの最初の6文字 = 「あいう」
+\\ abcdefの最初の1文字 = 「a」
+\\ abcdefの最初の2文字 = 「ab」
+\\ abcdefの最初の3文字 = 「abc」
+\\ abcdefの最初の4文字 = 「abcd」
+\\ abcdefの最初の5文字 = 「abcde」
+\\ abcdefの最初の6文字 = 「abcdef」
+
+\begin{thebibliography}{9}
+
+\bibitem{dek}
+Donald~E. Knuth.
+\newblock {\em The Art of Computer Programming}.
+\newblock 1973.
+
+\end{thebibliography}

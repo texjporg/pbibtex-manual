@@ -32,6 +32,22 @@ uplatex -kanji=utf8 01substring-up
 dvipdfmx 01substring-up
 diff 01substring-up.bbl.base 01substring-up.bbl || exit 1
 
+### 01textpre: text.prefix$
+
+platex -kanji=utf8 01textpre-p
+pbibtex -kanji=utf8 01textpre-p
+platex -kanji=utf8 01textpre-p
+platex -kanji=utf8 01textpre-p
+dvipdfmx 01textpre-p
+diff 01textpre-p.bbl.base 01textpre-p.bbl || exit 1
+
+uplatex -kanji=utf8 01textpre-up
+upbibtex -kanji=utf8 01textpre-up
+uplatex -kanji=utf8 01textpre-up
+uplatex -kanji=utf8 01textpre-up
+dvipdfmx 01textpre-up
+diff 01textpre-up.bbl.base 01textpre-up.bbl || exit 1
+
 ### 02jnewline: line break in BBL output
 
 ptex -kanji=utf8 02jnewline
