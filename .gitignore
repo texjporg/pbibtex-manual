@@ -163,4 +163,5 @@ TSWLatexianTemp*
 tests/**/*.pdf
 !tests/**/*.aux
 !tests/**/*.bbl.*base
+!tests/**/output/*.bbl
 
