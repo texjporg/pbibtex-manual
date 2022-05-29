@@ -8,7 +8,7 @@ BSTINPUTS=.:/usr/share/texlive/texmf-dist//
 export TEXMFCNF BSTINPUTS
 
 rc=0
-rm -f *.bbl
+rm -f *.bbl *.blg
 
 ### 01iskanji: is.kanji.str$
 

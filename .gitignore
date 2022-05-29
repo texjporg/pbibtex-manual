@@ -160,4 +160,7 @@ pythontex-files-*/
 TSWLatexianTemp*
 
 # tests
-tests/*.pdf
+tests/**/*.pdf
+!tests/**/*.aux
+!tests/**/*.bbl.*base
+
