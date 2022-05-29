@@ -162,5 +162,5 @@ TSWLatexianTemp*
 # tests
 tests/**/*.pdf
 !tests/**/*.aux
-!tests/**/*.bbl.base
+!tests/**/*.bbl.*base
 
