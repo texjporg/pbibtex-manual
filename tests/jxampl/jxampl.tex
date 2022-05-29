@@ -1,0 +1,42 @@
+\documentclass[autodetect-engine]{jsarticle}
+
+\makeatletter
+\ifx\bibtex\@undefined
+ \def\bibtex{bibtex}
+\fi
+\ifx\bst\@undefined
+ \def\bst{plain}
+\fi
+\if@jsc@uplatex
+ \def\engine{uplatex}
+\else
+ \def\engine{platex}
+\fi
+\makeatother
+
+\def\noop#1{}
+\def\JLaTeX{J\LaTeX}
+\def\JTeX{J\TeX}
+\def\JBibTeX{\leavevmode\lower .6ex\hbox{J}\kern-0.15em\BibTeX}
+
+\begin{document}
+\parindent0pt
+
+bibtex friend: \texttt{\bibtex}\\
+%
+\makeatletter
+\ifx\banner\@undefined\else
+ banner: \texttt{\banner}\\
+\fi
+\makeatother
+%
+bibtex style: \texttt{\bst}\\
+engine: \texttt{\engine}
+
+\vspace*{1em}
+
+\nocite{*}
+\bibliographystyle{\bst}
+\bibliography{jxampl,jbtxdoc}
+
+\end{document}
