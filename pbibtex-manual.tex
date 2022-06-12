@@ -424,7 +424,7 @@
 \end{itemize}
 
 
-\section{コマンドラインオプション}
+\section{コマンドラインオプション}\label{sec:commandline_option}
 
 基本的には\BibTeX と同様であるが，以下が追加されている．
 \begin{itemize}
@@ -442,6 +442,9 @@
     \item \pBibTeX ：なし（常に\code{euc}に固定）
     \item \upBibTeX ：\code{euc}, \code{uptex}
    \end{itemize}
+ \item |-guess-input-enc|, |-no-guess-input-enc|\\
+   入力ファイルの文字コードを推定する機能を有効/無効にする．
+   kpathsearchライブラリ変数|guess_input_kanji_encoding|よりもこちらが優先される．（\TeX~Live 2023以降）
 \end{itemize}
 
 
@@ -452,6 +455,10 @@
 \TL~2023以降kpathsearchライブラリの変数になった．
 これに伴い\file{texmf.cnf}の中や環境変数などで設定変更が可能になった．
 
+入力ファイルの文字コードを推定する機能が実装され
+変数|guess_input_kanji_encoding|で制御できるようになった（\TeX~Live 2023以降）．
+p\BibTeX ではデフォルト値1(推定する)，
+up\BibTeX ではデフォルト値0(推定しない)となっている．
 
 \section{参考：\JBibTeX と\pBibTeX の違い}\label{diff}
 
@@ -470,7 +477,8 @@
  \item 2023年，|int.to.chr$|, |chr.to.int$|関数の拡張
    （第\ref{sec:substring}節を参照） → \pBibTeX~j0.35\\
    |change.case$|関数の拡張（第\ref{sec:charset}節を参照） → \upBibTeX~u1.29\\
-   |max_print_line|のkpathsearchライブラリ変数化（第\ref{sec:kpathsearch}節を参照）
+   |max_print_line|のkpathsearchライブラリ変数化（第\ref{sec:kpathsearch}節を参照）\\
+   入力ファイルの文字コードの推定機能を追加（第\ref{sec:commandline_option}, \ref{sec:kpathsearch}節を参照）
 \end{itemize}
 
 \JBibTeX は当初NTT \JTeX と組み合わせて使用することを想定して開発されたため，
@@ -510,6 +518,9 @@
  \bibitem{tjb139} Takuji Tanaka，「bibtexuの日本語(CJK)対応」，
   2022/04/16,\\
   \url{https://github.com/texjporg/tex-jp-build/issues/139}
+ \bibitem{tjb142} Takuji Tanaka，「[ptexenc] 入力ファイルの文字コードの自動判定」，
+  2022/06/05,\\
+  \url{https://github.com/texjporg/tex-jp-build/issues/142}
 \end{thebibliography}
 
 \end{document}
