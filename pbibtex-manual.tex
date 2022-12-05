@@ -74,15 +74,15 @@
 \title{\emph{\pBibTeX~/~\upBibTeX マニュアル}}
 \author{日本語\TeX 開発コミュニティ\null
 \thanks{\url{https://texjp.org},\ e-mail: \texttt{issue(at)texjp.org}}}
-\date{version 0.99d-j0.35，\today}
+\date{version 0.99d-j0.36，\today}
 \maketitle
 
 \pBibTeX と\upBibTeX は，それぞれ\pTeX と\upTeX と組み合わせて使用することを
 想定して開発された\BibTeX の日本語対応版である．
 \begin{itemize}
-  \item \pBibTeX の開発元：\\
+  \item \pBibTeX, \upBibTeX の開発元：\\
     \url{https://github.com/texjporg/tex-jp-build/}
-  \item \upBibTeX の開発元：\\
+  \item \upBibTeX の開発元 (j0.35以前)：\\
     \url{http://www.t-lab.opal.ne.jp/tex/uptex.html}
   \item 本ドキュメントの開発元：\\
     \url{https://github.com/texjporg/pbibtex-manual/}
@@ -474,11 +474,13 @@ up\BibTeX ではデフォルト値0(推定しない)となっている．
  \item 2012年，\upBibTeX が\upTeX とともに\TL へ収録される．
  \item 2022年，出力BBLファイルでの行分割の改良（第\ref{sec:jnewline}節を参照）\\
    |substring$|関数の改良（第\ref{sec:substring}節を参照） → \pBibTeX~j0.34
- \item 2023年，|int.to.chr$|, |chr.to.int$|関数の拡張
+ \item |int.to.chr$|, |chr.to.int$|関数の拡張
    （第\ref{sec:substring}節を参照） → \pBibTeX~j0.35\\
    |change.case$|関数の拡張（第\ref{sec:charset}節を参照） → \upBibTeX~u1.29\\
    |max_print_line|のkpathsearchライブラリ変数化（第\ref{sec:kpathsearch}節を参照）\\
    入力ファイルの文字コードの推定機能を追加（第\ref{sec:commandline_option}, \ref{sec:kpathsearch}節を参照）
+ \item 2023年，\pBibTeX と\upBibTeX のソースコード，バイナリを統合\cite{tjb154}．
+   \pBibTeX は\upBibTeX へのシンボリックリンクとなるが使用法は変わらない → \pBibTeX~j0.36
 \end{itemize}
 
 \JBibTeX は当初NTT \JTeX と組み合わせて使用することを想定して開発されたため，
@@ -521,6 +523,9 @@ up\BibTeX ではデフォルト値0(推定しない)となっている．
  \bibitem{tjb142} Takuji Tanaka，「[ptexenc] 入力ファイルの文字コードの自動判定」，
   2022/06/05,\\
   \url{https://github.com/texjporg/tex-jp-build/issues/142}
+ \bibitem{tjb154} Takuji Tanaka，「(u)pbibtex バイナリの整理統合」，
+  2022/11/30,\\
+  \url{https://github.com/texjporg/tex-jp-build/issues/154}
 \end{thebibliography}
 
 \end{document}
