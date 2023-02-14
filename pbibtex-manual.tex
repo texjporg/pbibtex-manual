@@ -74,15 +74,15 @@
 \title{\emph{\pBibTeX~/~\upBibTeX マニュアル}}
 \author{日本語\TeX 開発コミュニティ\null
 \thanks{\url{https://texjp.org},\ e-mail: \texttt{issue(at)texjp.org}}}
-\date{version 0.99d-j0.34，\today}
+\date{version 0.99d-j0.36，\today}
 \maketitle
 
 \pBibTeX と\upBibTeX は，それぞれ\pTeX と\upTeX と組み合わせて使用することを
 想定して開発された\BibTeX の日本語対応版である．
 \begin{itemize}
-  \item \pBibTeX の開発元：\\
+  \item \pBibTeX, \upBibTeX の開発元：\\
     \url{https://github.com/texjporg/tex-jp-build/}
-  \item \upBibTeX の開発元：\\
+  \item \upBibTeX の開発元 (j0.35以前)：\\
     \url{http://www.t-lab.opal.ne.jp/tex/uptex.html}
   \item 本ドキュメントの開発元：\\
     \url{https://github.com/texjporg/pbibtex-manual/}
@@ -103,6 +103,7 @@
 本文書では，オリジナルの\BibTeX の仕様を把握している読者を想定し，
 \pBibTeX および\upBibTeX における機能の変更・追加点を説明する．
 
+\clearpage
 \tableofcontents
 \clearpage
 
@@ -290,7 +291,26 @@
   という点は従来と同じである．上記の例を見るのが早いであろう．
 \end{dangerous}
 
-\subsection{文字種が増えたことへの対応}
+\begin{itemize}
+ \item |int.to.chr$|, |chr.to.int$|\\
+  |int.to.chr$|は整数値1つをpopし，
+  対応する文字コードの文字1字をpushする組込関数であり，
+  |chr.to.int$|は文字1字をpopし，
+  対応する文字コードの整数値1つをpushする組込関数である．
+  (u)\pBibTeX~j0.34 (\TeX~Live 2022)以前では
+  |int.to.chr$|はASCIIの範囲の整数(最大127)のみ有効，
+  |chr.to.int$|は多バイト文字の場合先頭バイトのコード値が返る仕様であった．\\
+  (u)\pBibTeX~j0.35 (\TeX~Live 2023)以降では
+  これらの組み込み関数を文字集合全体が扱えるように拡張した．
+  すなわち，文字1字分
+  \footnote{\upBibTeX ではより正確にはコードポイント1つ分となる．
+  Unicodeでは合成文字や異体字セレクタ等では複数のコードポイントで1文字となるため．}の多バイト文字列を対象とし，
+  文字コードの整数としては\pBibTeX ではJISコード%
+  \footnote{JISコードを16bit表現した整数値$((区+32)\times 256+(点+32))$．}，
+  \upBibTeX ではUnicodeのスカラー値を用いる．
+\end{itemize}
+
+\subsection{文字種が増えたことへの対応}\label{sec:charset}
 
 \begin{itemize}
  \item |add.period$|\\
@@ -302,7 +322,9 @@
   （それぞれU+FF01, U+FF1F, U+3002, U+FF0E）もピリオド類とみなし，
   これらで終わっても\codechar{.}を付加しない．
 
-  \upBibTeX ではさらにU+203C, U+2047, U+2048, U+2049もピリオド類とみなす．
+  \upBibTeX ではさらにU+203C, U+203D\footnote{%
+  U+203Dをピリオド類とみなす仕様はバージョンu1.29（\TL~2023）以降．}, %
+  U+2047, U+2048, U+2049もピリオド類とみなす．
 
  \item |format.name$|\\
   文字列（フォーマット指定），整数値（何番めか），文字列（名前リスト）をpopし，
@@ -311,6 +333,23 @@
   半角空白と同じとみなし（全角空白は半角空白に変換して処理），
   また複数の氏名間の区切りとして|and|と同様に
   全角の読点\codechar{、}とコンマ\codechar{，}（それぞれU+FF0C, U+3001）も使える．
+
+ \item |change.case$|\\
+  変換対象の文字列と変換方法の文字をpopし，
+  大文字小文字変換を施した文字列をpushする組込関数である．
+  変換方法の文字は|l|, |u|, |t| で，それぞれ
+  小文字への変換，大文字への変換，タイトルケース（語頭が大文字で他が小文字）
+  への変換を示す．
+  もしこれが不都合で文字列の一部を変換したくない場合は，
+  対象の部分を波括弧|{|と|}|で囲むことにより変換なしに出来る．\\
+  従来は大文字小文字変換が行われる文字集合はASCIIのアルファベットに限られていたが，
+  \upBibTeX バージョンu1.29（\TL~2023）以降では
+  さらにLatin-1, Latin Extended-A, Greek and Coptic, Cyrillic,
+  Cyrillic Supplementブロックの文字も変換対象とするように拡張
+  \footnote{\pBibTeX ではギリシャ文字，キリル文字を全角文字として扱ってきた
+  長年の慣習に従いギリシャ文字，キリル文字の大文字小文字変換は行わない仕様を維持している．
+  また\pBibTeX, \upBibTeX ともに全角ラテン文字（U+FF21..FF3A, U+FF41..FF5A,
+  ＡＢＣなど）の大文字小文字変換は行わない．}した．
 \end{itemize}
 
 \subsection{日本語文字とそれ以外の区別}
@@ -385,7 +424,7 @@
 \end{itemize}
 
 
-\section{コマンドラインオプション}
+\section{コマンドラインオプション}\label{sec:commandline_option}
 
 基本的には\BibTeX と同様であるが，以下が追加されている．
 \begin{itemize}
@@ -403,8 +442,23 @@
     \item \pBibTeX ：なし（常に\code{euc}に固定）
     \item \upBibTeX ：\code{euc}, \code{uptex}
    \end{itemize}
+ \item |-guess-input-enc|, |-no-guess-input-enc|\\
+   入力ファイルの文字コードを推定する機能を有効/無効にする．
+   kpathsearchライブラリ変数|guess_input_kanji_encoding|よりもこちらが優先される．（\TeX~Live 2023以降）
 \end{itemize}
 
+
+\section{kpathsearchライブラリ変数}\label{sec:kpathsearch}
+
+出力行の長さの最大を指定する変数|max_print_line| (デフォルト値79)が
+((u)p)\BibTeX では従来ハードコードされ固定されていたが，
+\TL~2023以降kpathsearchライブラリの変数になった．
+これに伴い\file{texmf.cnf}の中や環境変数などで設定変更が可能になった．
+
+入力ファイルの文字コードを推定する機能が実装され
+変数|guess_input_kanji_encoding|で制御できるようになった（\TeX~Live 2023以降）．
+p\BibTeX ではデフォルト値1(推定する)，
+up\BibTeX ではデフォルト値0(推定しない)となっている．
 
 \section{参考：\JBibTeX と\pBibTeX の違い}\label{diff}
 
@@ -420,6 +474,13 @@
  \item 2012年，\upBibTeX が\upTeX とともに\TL へ収録される．
  \item 2022年，出力BBLファイルでの行分割の改良（第\ref{sec:jnewline}節を参照）\\
    |substring$|関数の改良（第\ref{sec:substring}節を参照） → \pBibTeX~j0.34
+ \item |int.to.chr$|, |chr.to.int$|関数の拡張
+   （第\ref{sec:substring}節を参照） → \pBibTeX~j0.35\\
+   |change.case$|関数の拡張（第\ref{sec:charset}節を参照） → \upBibTeX~u1.29\\
+   |max_print_line|のkpathsearchライブラリ変数化（第\ref{sec:kpathsearch}節を参照）\\
+   入力ファイルの文字コードの推定機能を追加（第\ref{sec:commandline_option}, \ref{sec:kpathsearch}節を参照）
+ \item 2023年，\pBibTeX と\upBibTeX のソースコード，バイナリを統合\cite{tjb154}．
+   \pBibTeX は\upBibTeX へのシンボリックリンクとなるが使用法は変わらない → \pBibTeX~j0.36
 \end{itemize}
 
 \JBibTeX は当初NTT \JTeX と組み合わせて使用することを想定して開発されたため，
@@ -456,6 +517,15 @@
  \bibitem{tjb133} Hironobu Yamashita，「(u)pbibtex: freeze at en-dash etc. + sieicej.bst」，
   2022/02/19,\\
   \url{https://github.com/texjporg/tex-jp-build/issues/133}
+ \bibitem{tjb139} Takuji Tanaka，「bibtexuの日本語(CJK)対応」，
+  2022/04/16,\\
+  \url{https://github.com/texjporg/tex-jp-build/issues/139}
+ \bibitem{tjb142} Takuji Tanaka，「[ptexenc] 入力ファイルの文字コードの自動判定」，
+  2022/06/05,\\
+  \url{https://github.com/texjporg/tex-jp-build/issues/142}
+ \bibitem{tjb154} Takuji Tanaka，「(u)pbibtex バイナリの整理統合」，
+  2022/11/30,\\
+  \url{https://github.com/texjporg/tex-jp-build/issues/154}
 \end{thebibliography}
 
 \end{document}

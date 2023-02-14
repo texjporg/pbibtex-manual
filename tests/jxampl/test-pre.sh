@@ -20,3 +20,13 @@ for bst in jabbrv jplain jalpha junsrt jname jipsj tieice tipsj jorsj; do
 
 done
 
+
+### uplatex & bibtexu
+
+for bst in jabbrv jplain jalpha junsrt jname jipsj tieice tipsj jorsj; do
+
+  job=jxampl-$bst-bu
+  uplatex -jobname=$job "\def\bst{$bst}\def\bibtex{bibtexu}\input" jxampl
+
+done
+

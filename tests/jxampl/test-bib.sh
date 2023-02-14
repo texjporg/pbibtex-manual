@@ -60,6 +60,16 @@ for bst in jabbrv jplain jalpha junsrt jname jipsj tieice tipsj jorsj; do
 done
 
 
+### uplatex & bibtexu
+
+for bst in jabbrv jplain jalpha junsrt jname jipsj tieice tipsj jorsj; do
+#for bst in junsrt jname; do
+
+  job=jxampl-$bst-bu
+  $BIBTEXU $job  || test $? = 1 \
+   && diff output/$job.bbl $job.bbl || { rc=4 ; bv=$bv,$bst ; }
+
+done
 
 
 if [ $rc -gt 0 ]; then

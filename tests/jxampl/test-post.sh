@@ -26,3 +26,16 @@ for bst in jabbrv jplain jalpha junsrt jname jipsj tieice tipsj jorsj; do
 
 done
 
+
+### uplatex & bibtexu
+
+for bst in jabbrv jplain jalpha junsrt jname jipsj tieice tipsj jorsj; do
+
+  job=jxampl-$bst-bu
+  banner=`head -1 $job.blg`
+  uplatex -jobname=$job "\def\bst{$bst}\def\bibtex{bibtexu}\def\banner{$banner}\input" jxampl
+  uplatex -jobname=$job "\def\bst{$bst}\def\bibtex{bibtexu}\def\banner{$banner}\input" jxampl
+  dvipdfmx $job
+
+done
+

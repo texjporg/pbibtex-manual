@@ -21,16 +21,16 @@ rm -f *.bbl *.blg
 
 ### pbibtex
 
-for job in charp; do
+for job in widthp; do
 
 max_print_line=79 $PBIBTEX $job \
-  ; diff $job.bbl.base $job.bbl || { rc=1 ; bp=$bp,$job ; }
+  && diff $job.bbl.base $job.bbl || { rc=1 ; bp=$bp,$job ; }
 
 done
 
-for job in widthp casep periodp substrp txtprfxp namep isknjp; do
+for job in casep periodp substrp txtprfxp namep isknjp charp; do
 
-max_print_line=79 $PBIBTEX $job \
+max_print_line=119 $PBIBTEX $job \
   && diff $job.bbl.base $job.bbl || { rc=1 ; bp=$bp,$job ; }
 
 done
@@ -38,16 +38,16 @@ done
 
 ### upbibtex
 
-for job in charu; do
+for job in widthu; do
 
 max_print_line=79 $UPBIBTEX $job \
-  ; diff $job.bbl.base $job.bbl || { rc=2 ; bu=$bu,$job ; }
+  && diff $job.bbl.base $job.bbl || { rc=2 ; bu=$bu,$job ; }
 
 done
 
-for job in widthu caseu periodu substru txtprfxu nameu isknju; do
+for job in caseu periodu substru txtprfxu nameu isknju charu; do
 
-max_print_line=79 $UPBIBTEX $job \
+max_print_line=119 $UPBIBTEX $job \
   && diff $job.bbl.base $job.bbl || { rc=2 ; bu=$bu,$job ; }
 
 done
@@ -55,23 +55,36 @@ done
 
 ### upbibtex -kanji-internal=euc
 
-for job in charp; do
-
-max_print_line=79 $UPBIBTEX_EUC $job \
-  ; diff $job.bbl.base $job.bbl || { rc=3 ; be=$be,$job ; }
-
-done
-
-for job in widthp casep periodp substrp txtprfxp namep isknjp; do
+for job in widthp; do
 
 max_print_line=79 $UPBIBTEX_EUC $job \
   && diff $job.bbl.base $job.bbl || { rc=3 ; be=$be,$job ; }
 
 done
 
+for job in casep periodp substrp txtprfxp namep isknjp charp; do
+
+max_print_line=119 $UPBIBTEX_EUC $job \
+  && diff $job.bbl.base $job.bbl || { rc=3 ; be=$be,$job ; }
+
+done
 
 
+### bibtexu
 
+for job in widthu; do
+
+max_print_line=79 $BIBTEXU $job \
+  && diff $job.bbl.ubase $job.bbl || { rc=4 ; bv=$bv,$job ; }
+
+done
+
+for job in caseu periodu substru txtprfxu nameu isknju charu; do
+
+max_print_line=119 $BIBTEXU $job \
+  && diff $job.bbl.ubase $job.bbl || { rc=4 ; bv=$bv,$job ; }
+
+done
 
 
 if [ $rc -gt 0 ]; then
