@@ -64,7 +64,7 @@
 }
 \makeatother
 
-\def\TL{\TeX\ Live}
+\def\TL{\TeX~Live}
 
 \def\_{\leavevmode\vrule width .45em height -.2ex depth .3ex\relax}
 
@@ -82,7 +82,7 @@
 \begin{itemize}
   \item \pBibTeX, \upBibTeX の開発元：\\
     \url{https://github.com/texjporg/tex-jp-build/}
-  \item \upBibTeX の開発元 (j0.35以前)：\\
+  \item \upBibTeX の開発元（j0.35以前）：\\
     \url{http://www.t-lab.opal.ne.jp/tex/uptex.html}
   \item 本ドキュメントの開発元：\\
     \url{https://github.com/texjporg/pbibtex-manual/}
@@ -144,7 +144,7 @@
   したがって，この時点で\pBibTeX （内部コード|euc|）では最大2バイト長く，
   \upBibTeX （内部コード|uptex|）では最大6バイト長い文字列が取り出されうる．
 
-  さらに，(u)\pBibTeX~j0.34 (\TeX~Live 2022)以降では% r62095 (2022-02-20)
+  さらに，(u)\pBibTeX~j0.34 (\TL~2022)以降では% r62095 (2022-02-20)
 \begin{quotation}
   \begin{enumerate}
    \item[(3)] 起点が|#2|以上に指定されたにもかかわらず，上の(1)の調整により
@@ -270,7 +270,7 @@
 
 \par\medskip
 \begin{dangerous}
-  (u)\pBibTeX~j0.33 (\TeX~Live 2021)以前の|substring$|では，
+  (u)\pBibTeX~j0.33 (\TL~2021)以前の|substring$|では，
   オリジナルの\JBibTeX と同様，上記のうち調整(1)と(2)しか
   行っていなかった．すなわち「開始位置や終了位置が多バイトの文字の
   途中となる場合は，位置を調整して\emph{常に長めに切り出す}」という
@@ -283,7 +283,7 @@
   |substring$|関数により文字列を1つずつ切り詰めて短くする処理」に
   和文文字リテラルが渡ると文字列が一向に短くならず，
   無限ループが起きてしまっていた\cite{tjb133}．
-  そこで，(u)\pBibTeX~j0.34 (\TeX~Live 2022)以降は調整(3)と(4)を加え，
+  そこで，(u)\pBibTeX~j0.34 (\TL~2022)以降は調整(3)と(4)を加え，
   \emph{カウント起点が「先頭の多バイト文字の途中」または「末尾の多バイト文字の
   途中」の場合に限って取り除くことで短めに切り出す}こととした．
   なお，カウント終点側の多バイト文字については常に長めに切り出すし，
@@ -294,17 +294,18 @@
 \begin{itemize}
  \item |int.to.chr$|, |chr.to.int$|\\
   |int.to.chr$|は整数値1つをpopし，
-  対応する文字コードの文字1字をpushする組込関数であり，
+  対応する文字コードの文字1字をpushする組込関数である．
   |chr.to.int$|は文字1字をpopし，
   対応する文字コードの整数値1つをpushする組込関数である．
-  (u)\pBibTeX~j0.34 (\TeX~Live 2022)以前では
-  |int.to.chr$|はASCIIの範囲の整数(最大127)のみ有効，
+  (u)\pBibTeX~j0.34 (\TL~2022)以前では
+  |int.to.chr$|はASCIIの範囲の整数（最大127）のみ有効，
   |chr.to.int$|は多バイト文字の場合先頭バイトのコード値が返る仕様であった．\\
-  (u)\pBibTeX~j0.35 (\TeX~Live 2023)以降では
-  これらの組み込み関数を文字集合全体が扱えるように拡張した．
+  (u)\pBibTeX~j0.35 (\TL~2023)以降では
+  これらの組込関数を文字集合全体が扱えるように拡張した．
   すなわち，文字1字分
   \footnote{\upBibTeX ではより正確にはコードポイント1つ分となる．
-  Unicodeでは合成文字や異体字セレクタ等では複数のコードポイントで1文字となるため．}の多バイト文字列を対象とし，
+  Unicodeでは合成文字や異体字セレクタ等では複数のコードポイントで
+  1文字となるため．}の多バイト文字列を対象とし，
   文字コードの整数としては\pBibTeX ではJISコード%
   \footnote{JISコードを16bit表現した整数値$((区+32)\times 256+(点+32))$．}，
   \upBibTeX ではUnicodeのスカラー値を用いる．
@@ -323,7 +324,7 @@
   これらで終わっても\codechar{.}を付加しない．
 
   \upBibTeX ではさらにU+203C, U+203D\footnote{%
-  U+203Dをピリオド類とみなす仕様はバージョンu1.29（\TL~2023）以降．}, %
+  U+203Dをピリオド類とみなす仕様はバージョンu1.29 (\TL~2023)以降．}, %
   U+2047, U+2048, U+2049もピリオド類とみなす．
 
  \item |format.name$|\\
@@ -337,17 +338,18 @@
  \item |change.case$|\\
   変換対象の文字列と変換方法の文字をpopし，
   大文字小文字変換を施した文字列をpushする組込関数である．
-  変換方法の文字は|l|, |u|, |t| で，それぞれ
+  変換方法の文字は|l|, |u|, |t|で，それぞれ
   小文字への変換，大文字への変換，タイトルケース（語頭が大文字で他が小文字）
   への変換を示す．
   もしこれが不都合で文字列の一部を変換したくない場合は，
   対象の部分を波括弧|{|と|}|で囲むことにより変換なしに出来る．\\
   従来は大文字小文字変換が行われる文字集合はASCIIのアルファベットに限られていたが，
-  \upBibTeX バージョンu1.29（\TL~2023）以降では
+  \upBibTeX バージョンu1.29 (\TL~2023)以降では
   さらにLatin-1, Latin Extended-A, Greek and Coptic, Cyrillic,
   Cyrillic Supplementブロックの文字も変換対象とするように拡張
-  \footnote{\pBibTeX ではギリシャ文字，キリル文字を全角文字として扱ってきた
-  長年の慣習に従いギリシャ文字，キリル文字の大文字小文字変換は行わない仕様を維持している．
+  \footnote{\pBibTeX ではギリシャ文字・キリル文字を全角文字として扱ってきた
+  長年の慣習に従い，ギリシャ文字・キリル文字の大文字小文字変換は
+  行わない仕様を維持している．
   また\pBibTeX, \upBibTeX ともに全角ラテン文字（U+FF21..FF3A, U+FF41..FF5A,
   ＡＢＣなど）の大文字小文字変換は行わない．}した．
 \end{itemize}
@@ -370,7 +372,7 @@
     いるのでそれに即して記述すると，既定値が16 (kanji), 17 (kana), 19 (hangul)の
     ブロックを真，15 (latin), 18 (CJK symbol)のブロックを偽としている．}．
     \pBibTeX とは異なり，記号類（句読点，括弧類，●○■□◆◇など）は「日本語文字」と
-    して扱わない（バージョンu1.27（\TL~2021）以降\cite{tjb109}）．
+    して扱わない（バージョンu1.27 (\TL~2021)以降\cite{tjb109}）．
   \end{itemize}
 \end{itemize}
 
@@ -414,7 +416,7 @@
    する場面において，オリジナルの\BibTeX は任意の半角空白を分割可能箇所とみなす
    \footnote{\BibTeX~0.99c以前では半角空白以外の箇所も行末に\code{\%}を補って改行された
    が，2010年の0.99dでURLなどの長い文字列を壊さないように半角空白以外での分割が
-   禁止された．}が，(u)\pBibTeX~j0.34 (\TeX~Live 2022)以降は\emph{日本語文字の直後でない
+   禁止された．}が，(u)\pBibTeX~j0.34 (\TL~2022)以降は\emph{日本語文字の直後でない
    半角空白のみを分割可能箇所とみなす}．これは，元々BIBファイルにあった日本語文字直後の
    半角空白が仮にBBLファイルで改行に置換されれば，(u)\pTeX での読込時に「日本語文字直後の
    改行は空白を発生しない」という仕様により半角空白が消えてしまうためである\cite{tjb132}．
@@ -444,21 +446,21 @@
    \end{itemize}
  \item |-guess-input-enc|, |-no-guess-input-enc|\\
    入力ファイルの文字コードを推定する機能を有効/無効にする．
-   kpathsearchライブラリ変数|guess_input_kanji_encoding|よりもこちらが優先される．（\TeX~Live 2023以降）
+   kpathsearchライブラリ変数|guess_input_kanji_encoding|よりもこちらが優先される．（\TL~2023以降）
 \end{itemize}
 
 
 \section{kpathsearchライブラリ変数}\label{sec:kpathsearch}
 
-出力行の長さの最大を指定する変数|max_print_line| (デフォルト値79)が
+出力行の長さの最大を指定する変数|max_print_line|（デフォルト値79）が
 ((u)p)\BibTeX では従来ハードコードされ固定されていたが，
 \TL~2023以降kpathsearchライブラリの変数になった．
 これに伴い\file{texmf.cnf}の中や環境変数などで設定変更が可能になった．
 
 入力ファイルの文字コードを推定する機能が実装され
-変数|guess_input_kanji_encoding|で制御できるようになった（\TeX~Live 2023以降）．
-p\BibTeX ではデフォルト値1(推定する)，
-up\BibTeX ではデフォルト値0(推定しない)となっている．
+変数|guess_input_kanji_encoding|で制御できるようになった（\TL~2023以降）．
+\pBibTeX ではデフォルト値1（推定する），
+\upBibTeX ではデフォルト値0（推定しない）となっている．
 
 \section{参考：\JBibTeX と\pBibTeX の違い}\label{diff}
 
