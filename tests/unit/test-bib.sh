@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Copyright 2022 TANAKA Takuji <ttk@t-lab.opal.ne.jp>
+# Copyright 2022-2023 TANAKA Takuji <ttk@t-lab.opal.ne.jp>
 # You may freely use, modify and/or distribute this file.
 
 #SOURCE=somewhere/source
@@ -21,20 +21,9 @@ rm -f *.bbl *.blg
 
 ### pbibtex
 
-for job in widthp; do
-
-max_print_line=79 $PBIBTEX $job \
-  && diff $job.bbl.base $job.bbl || { rc=1 ; bp=$bp,$job ; }
-
-done
-
-for job in casep periodp substrp txtprfxp namep isknjp charp; do
-
-max_print_line=119 $PBIBTEX $job \
-  && diff $job.bbl.base $job.bbl || { rc=1 ; bp=$bp,$job ; }
-
-done
-
+#
+# These tests have been moved to test-pbib.sh
+#
 
 ### upbibtex
 
@@ -70,22 +59,9 @@ max_print_line=119 $UPBIBTEX_EUC $job \
 done
 
 
-### bibtexu
 
-for job in widthu; do
 
-max_print_line=79 $BIBTEXU $job \
-  && diff $job.bbl.ubase $job.bbl || { rc=4 ; bv=$bv,$job ; }
-
-done
-
-for job in caseu periodu substru txtprfxu nameu isknju charu; do
-
-max_print_line=119 $BIBTEXU $job \
-  && diff $job.bbl.ubase $job.bbl || { rc=4 ; bv=$bv,$job ; }
-
-done
-
+### wrap up
 
 if [ $rc -gt 0 ]; then
   if [ -n "$bp" ]; then
