@@ -76,6 +76,19 @@ FUNCTION {output_entry} {
   "\item[-6 3] " field #-6 #3 substring$ * write$ newline$
   "\item[-7 2] " field #-7 #2 substring$ * write$ newline$
   "\item[-8 1] " field #-8 #1 substring$ * write$ newline$
+  "\item[1 7, 1 1] " field #1 #7 substring$ #1 #1 substring$ * write$ newline$
+  "\item[1 6, 1 1] " field #1 #6 substring$ #1 #1 substring$ * write$ newline$
+  "\item[1 5, 1 1] " field #1 #5 substring$ #1 #1 substring$ * write$ newline$
+  "\item[1 4, 1 1] " field #1 #4 substring$ #1 #1 substring$ * write$ newline$
+  "\item[1 3, 1 1] " field #1 #3 substring$ #1 #1 substring$ * write$ newline$
+  "\item[1 2, 1 1] " field #1 #2 substring$ #1 #1 substring$ * write$ newline$
+  "\item[1 1, 1 1] " field #1 #1 substring$ #1 #1 substring$ * write$ newline$
+  "\item[2 1, 1 1] " field #2 #1 substring$ #1 #1 substring$ * write$ newline$
+  "\item[3 1, 1 1] " field #3 #1 substring$ #1 #1 substring$ * write$ newline$
+  "\item[4 1, 1 1] " field #4 #1 substring$ #1 #1 substring$ * write$ newline$
+  "\item[5 1, 1 1] " field #5 #1 substring$ #1 #1 substring$ * write$ newline$
+  "\item[6 1, 1 1] " field #6 #1 substring$ #1 #1 substring$ * write$ newline$
+  "\item[7 1, 1 1] " field #7 #1 substring$ #1 #1 substring$ * write$ newline$
 }
 
 FUNCTION {type} {output_entry}
